@@ -112,16 +112,16 @@ let animals = ["Simba", "Zazu", "Ed"];
 let [lion, bird] = animals;
 console.log(lion, bird); // Simba, Zazu
 
-let king = {name: "Mufasa", kids: 1};
-let name = king.name;
-let kids = king.kids;
-console.log(name, kids);
-
-let {nameObj, kidsObj} = king;
-console.log(nameObj, kidsObj);
+// let king = {name: "Mufasa", kids: 1};
+// let name = king.name;
+// let kids = king.kids;
+// console.log(name, kids);
+// 
+// let {nameObj, kidsObj} = king;
+// console.log(nameObj, kidsObj);
 
 let son = {name: "Simba", parents: 2};
 let name, parents;
-{name, parents} = son;
-// ({name, parents} = son); // fix complile error, since name and parents are conflict
+// {name, parents} = son;
+({name, parents} = son); // fix complile error, since name and parents are conflict
 console.log(sonName, parents);
