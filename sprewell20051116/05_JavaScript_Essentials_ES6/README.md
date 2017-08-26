@@ -30,19 +30,29 @@ console.log(limit_const);
 limit_const = 200;
 // console.log(limit_const);
 const emails = ["email1", "email2", "email3"];
-// // emails = []; // no re-assign
+// emails = []; Error, you cannot re-assign const variables
 // You can use "push()" to add elemets"
 emails.push("email4")
 console.log(emails); // ["email1", "email2", "email3", "email4"];
 ```
 
 ### 變數的 scope
+- `var` 關鍵字使用大括號 `{}` 不會影響他的 scoping
+```js
+var limit = 200;
+{
+  var limit = 10;
+  console.log("backstage limit ", limit); // 10
+}
+console.log("overall venue limit limit", limit); // 10
+```
+
 - `let` 關鍵字可以使用大括號 `{}` 隔開 scope
 ```js
-let limit_40 = 200;
+let limit = 200;
 {
-  let limit_40 = 10;
-  console.log("backstage limit", limit_40); // 10
+  let limit = 10;
+  console.log("backstage limit", limit); // 10
 }
-console.log("overall venue limit", limit_40); // 200
+console.log("overall venue limit", limit); // 200
 ```
