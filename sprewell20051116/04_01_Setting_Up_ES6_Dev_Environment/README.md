@@ -132,9 +132,9 @@ package.json
     "build": "webpack",
 +   "start": "webpack-dev-server"
   },
-  "bable": {
++  "bable": {
 +   "presets": ["es2015"]
-  },
++  },
 ...
 ```
 以上都設定完成後，就可以 run dev server 了。
