@@ -1,1 +1,1 @@
-# 05 - JaveScript_Essentials - ES6 (Part2)
+# 07_JavaScript_Classes_And_Prototypes
