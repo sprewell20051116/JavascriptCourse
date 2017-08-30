@@ -81,6 +81,8 @@ function Wizards (name, house, pet) {
 
   this.greet = () => `I'm ${this.name} from ${this.house}`;
 }
+let HarryTest =  new Wizards("Harry Potter", "Gryffindor", "Owl");
+console.log(HarryTest.greet());
 
 Wizards.prototype.pet_name;
 Wizards.prototype.info = function() {
@@ -91,3 +93,22 @@ Harry.pet_name = "Hedwig"
 console.log(Harry);
 console.log(Harry.greet());
 console.log(Harry.info());
+
+// Exercise 7 Prototype a Vehicle
+// TODO
+// * add a 'color' field to the prototype
+// * add a 'bio' method that *returns*:
+//      A ${this.color} ${this.make} made in ${this.year}.
+
+function Vehicle(make, year) {
+  this.make = make;
+  this.year = year;
+}
+
+Vehicle.prototype.color;
+Vehicle.prototype.bio = function() {
+  return `${this.color} ${this.make} made in ${this.year}`;
+};
+let s = new Vehicle("Tesla", 2017);
+s.color = "black";
+console.log(s);
