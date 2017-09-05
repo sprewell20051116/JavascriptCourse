@@ -1,1 +1,1 @@
-# 07_JavaScript_Classes_And_Prototypes
+# 08_JavaScript_DataStructure
