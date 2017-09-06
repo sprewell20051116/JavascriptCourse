@@ -83,12 +83,12 @@ const budget = () => {
   const withdraw20 = () => changeBal(-20);
   const check = () => balance;
 
-  // return {
-  //   deposit20: deposit20, // return a object
-  //   withdraw20: withdraw20,
-  //   check: check
-  // };
-  return {deposit20, withdraw20, check};
+  return {
+    deposit20: deposit20, // return a object
+    withdraw20: withdraw20,
+    check: check
+  };
+  // return {deposit20, withdraw20, check};
 }
 
 let wallet = budget();
