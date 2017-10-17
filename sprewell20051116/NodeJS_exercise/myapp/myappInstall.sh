@@ -2,3 +2,4 @@
 # http://expressjs.com/zh-tw/
 npm install express --save
 npm install body-parser --save
+npm install node-static
