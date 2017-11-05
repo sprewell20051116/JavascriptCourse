@@ -45,8 +45,8 @@ $ mongod # 進入 mongo shell
 > db.testData.insert(k);
 # 確認資料有被插入至 testData 這個 collection
 > db.testData.find();
-# { "_id" : ObjectId("59fe810e89600d186c2f2552"), "name" : "mongo" }
-# { "_id" : ObjectId("59fe811289600d186c2f2553"), "x" : 3 }
+  { "_id" : ObjectId("59fe810e89600d186c2f2552"), "name" : "mongo" }
+  { "_id" : ObjectId("59fe811289600d186c2f2553"), "x" : 3 }
 ```  
 官方文件提供了產生測試資料的教學
 ```sh
@@ -61,5 +61,27 @@ $ mongod # 進入 mongo shell
       col.insert({x:i});
     }
     print(col.count());
-}
+  }
+####
+```
+將 document 指定給一個 variable 然後取用
+```sh
+var doc = db.testData.find();
+# 列出 testData 這個 collection 中所有的 document
+while ( doc.hasNext() ) printjson( doc.next() )
+# 也可以用 printjson() 方法指定要印出的 index
+printjson(doc[4])
+```
+#### 查詢指定的 document
+透過傳遞一個物件參數，我們可以找到 collection 中的特定筆資料
+```sh
+> db.testData.find({ x : 18 });
+  { "_id" : ObjectId("59fe816d89600d186c2f2565"), "x" : 18 }
+```
+限制查詢回傳的資料數量
+```sh
+> db.testData.find().limit(3);
+  { "_id" : ObjectId("59fe810e89600d186c2f2552"), "name" : "mongo" }
+  { "_id" : ObjectId("59fe811289600d186c2f2553"), "x" : 3 }
+  { "_id" : ObjectId("59fe816d89600d186c2f2554"), "x" : 1 }
 ```
