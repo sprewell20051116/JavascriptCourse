@@ -1,10 +1,10 @@
 ## mongo shell exercise
 #### ref
+- http://andyyou.logdown.com/posts/177570-mongodb-notes
 ```
-http://andyyou.logdown.com/posts/177570-mongodb-notes
+因為 MongoDB 是動態式架構(schema)。在建立一筆資料之前你也不需要事先定義 schema
+M插入任何一筆資料之前你是不需要自己建立集合
 ```
-- 因為 MongoDB 是動態式架構(schema)。在建立一筆資料之前你也不需要事先定義 schema
-- 插入任何一筆資料之前你是不需要自己建立集合
 
 #### 啟動 mongodb  
 ```sh
@@ -33,7 +33,7 @@ $ mongo [HOSTNAME]:[PORT]/[DB_NAME] # remote URL
 ```
 #### 建立一個 collection 並插入一筆 document
 簡單的插入兩個 document 並確認資料庫中有這兩筆 document
-```sh
+```
 $ mongod # 進入 mongo shell
 # 建立 j 以及 k 這兩個 document (object)
 > j = { name : "mongo" }
@@ -49,12 +49,12 @@ $ mongod # 進入 mongo shell
   { "_id" : ObjectId("59fe811289600d186c2f2553"), "x" : 3 }
 ```  
 官方文件提供了產生測試資料的教學
-```sh
+```
 > for (var i = 1; i <= 25; i++) db.testData.insert( { x : i } )
 > db.testData.find()
 ```
 如果要快速在不同的資料庫，集合中建立資料，官方文件也提供 function 的方式：
-```sh
+```
 > function insertData(dbName, colName, num) {
     var col = db.getSiblingDB(dbName).getCollection(colName);
     for (i = 0; i < num; i++) {
@@ -65,23 +65,138 @@ $ mongod # 進入 mongo shell
 ####
 ```
 將 document 指定給一個 variable 然後取用
-```sh
-var doc = db.testData.find();
+```
+> var doc = db.testData.find();
 # 列出 testData 這個 collection 中所有的 document
-while ( doc.hasNext() ) printjson( doc.next() )
+> while ( doc.hasNext() ) printjson( doc.next() )
 # 也可以用 printjson() 方法指定要印出的 index
-printjson(doc[4])
+> printjson(doc[4])
 ```
 #### 查詢指定的 document
 透過傳遞一個物件參數，我們可以找到 collection 中的特定筆資料
-```sh
+```
 > db.testData.find({ x : 18 });
   { "_id" : ObjectId("59fe816d89600d186c2f2565"), "x" : 18 }
 ```
 限制查詢回傳的資料數量
-```sh
+```
 > db.testData.find().limit(3);
   { "_id" : ObjectId("59fe810e89600d186c2f2552"), "name" : "mongo" }
   { "_id" : ObjectId("59fe811289600d186c2f2553"), "x" : 3 }
   { "_id" : ObjectId("59fe816d89600d186c2f2554"), "x" : 1 }
+```
+
+## mongo NodeJS exercise
+#### ref
+- http://mongodb.github.io/node-mongodb-native/2.2/quick-start/quick-start/
+
+#### 環境
+建立 NodeJS_Mondodb 環境
+```sh
+# 安裝 package
+$ npm init
+$ npm install mondodb --save
+# 啟動 mongo db server
+$ mongod
+```
+#### Connect to MongoDB
+新增一個檔案 `app.js`，連接 mongoDB 中的 `myproject` 資料庫。
+```js
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  db.close();
+});
+```
+測試看看
+```
+$ node app.js
+```
+#### CRUD
+- Insert a Document
+```js
+// Function: insertDocuments
+// Description:
+// The insert command returns an object with the following fields:
+//
+// result Contains the result document from MongoDB
+// ops Contains the documents inserted with added _id fields
+// connection Contains the connection used to perform the insert
+var insertDocuments = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Insert some documents
+  collection.insertMany([
+    {a : 1}, {a : 2}, {a : 3}
+  ], function(err, result) {
+    assert.equal(err, null);
+    assert.equal(3, result.result.n);
+    assert.equal(3, result.ops.length);
+    console.log("Inserted 3 documents into the collection");
+    callback(result);
+  });
+}
+
+// call insertDocuments method
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
+
+  insertDocuments(db, function() {
+    db.close();
+  });
+});
+```
+- Find all Documents
+```js
+// Function: findDocuments
+// Description:
+// The insert command returns an object with the following fields:
+//
+// result Contains the result document from MongoDB
+// ops Contains the documents inserted with added _id fields
+// connection Contains the connection used to perform the insert
+var findDocuments = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Find some documents
+  collection.find({}).toArray(function(err, docs) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(docs)
+    callback(docs);
+  });
+}
+
+//call findDocuments method
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  insertDocuments(db, function() {
+    findDocuments(db, function() {
+      db.close();
+    });
+  });
+});
 ```

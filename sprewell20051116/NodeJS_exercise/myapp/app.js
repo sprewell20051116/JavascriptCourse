@@ -16,13 +16,16 @@ var url = 'mongodb://localhost:27017/myproject'
 mongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log('connection successfully to server');
-  // db.close();
   insertDocuments(db, function() {
-    db.close();
+    findDocuments(db, function () {
+      db.close();
+    });
   });
 });
 
-
+//
+// Insert document
+//
 var insertDocuments = function(db, callback) {
   // Get the documents collection
   var collection = db.collection('documents');
@@ -36,4 +39,18 @@ var insertDocuments = function(db, callback) {
     console.log("Insert 3 documents into the collection");
     callback(result);
   })
+}
+
+
+//
+// Find Documents
+//
+var findDocuments = function(db, callback) {
+  var collection = db.collection('documents');
+  collection.find({}).toArray(function(err, docs) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(docs);
+    callback(docs);
+  });
 }
