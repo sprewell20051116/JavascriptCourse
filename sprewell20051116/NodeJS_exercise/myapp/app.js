@@ -17,7 +17,8 @@ mongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log('connection successfully to server');
   insertDocuments(db, function() {
-    findDocuments(db, function () {
+    // findDocuments(db, function () {
+    findDocumentsFilter(db, function () {
       db.close();
     });
   });
@@ -48,6 +49,21 @@ var insertDocuments = function(db, callback) {
 var findDocuments = function(db, callback) {
   var collection = db.collection('documents');
   collection.find({}).toArray(function(err, docs) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(docs);
+    callback(docs);
+  });
+}
+
+//
+// Query filter
+//
+var findDocumentsFilter = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Find some documents
+  collection.find({'a': 3}).toArray(function(err, docs) {
     assert.equal(err, null);
     console.log("Found the following records");
     console.log(docs);

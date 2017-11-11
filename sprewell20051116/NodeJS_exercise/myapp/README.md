@@ -200,3 +200,22 @@ MongoClient.connect(url, function(err, db) {
   });
 });
 ```
+- Find Documents with query filter
+`collection.find({'a': 3}).toArray()`
+
+```js
+//
+// Query filter
+//
+var findDocumentsFilter = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Find some documents
+  collection.find({'a': 3}).toArray(function(err, docs) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(docs);
+    callback(docs);
+  });
+}
+```
