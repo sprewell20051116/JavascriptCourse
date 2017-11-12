@@ -18,7 +18,8 @@ mongoClient.connect(url, function(err, db) {
   console.log('connection successfully to server');
   insertDocuments(db, function() {
     // findDocuments(db, function () {
-    findDocumentsFilter(db, function () {
+    // findDocumentsFilter(db, function () {
+    updateDocument(db, function () {
       db.close();
     });
   });
@@ -68,5 +69,21 @@ var findDocumentsFilter = function(db, callback) {
     console.log("Found the following records");
     console.log(docs);
     callback(docs);
+  });
+}
+
+//
+// Update Document
+//
+var updateDocument = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Update document where a is 2, set b equal to 1
+  collection.updateOne({ a : 2 }
+    , { $set: { b : 1 } }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Updated the document with the field a equal to 2");
+    callback(result);
   });
 }

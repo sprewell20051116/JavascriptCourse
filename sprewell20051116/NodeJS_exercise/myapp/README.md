@@ -28,7 +28,7 @@ $ mongo [HOSTNAME]:[PORT]/[DB_NAME] # remote URL
 > DBQuery.shellBatchSize = x # 讀取資料時迭代一次取回幾筆資料
 > printjson() # 將 document 以 JSON 方式輸出
 # --- 資料庫操作 ---
-> db.[DB_NAME].insert([DOCUMENT]) # 插入資料
+> db.[DB_NAME].insert([DOCUMENT]) # 插M入資料
 > db.[DB_NAME].find() # 列出資料庫中的資料
 ```
 #### 建立一個 collection 並插入一筆 document
@@ -199,9 +199,10 @@ MongoClient.connect(url, function(err, db) {
     });
   });
 });
+
 ```
-- Find Documents with query filter
-`collection.find({'a': 3}).toArray()`
+- Find Documents with query filter  
+使用 collection.find({``'a': 3}``).toArray()
 
 ```js
 //
@@ -218,4 +219,74 @@ var findDocumentsFilter = function(db, callback) {
     callback(docs);
   });
 }
+
+//call findDocumentsFilter method
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  insertDocuments(db, function() {
+    findDocumentsFilter(db, function() {
+      db.close();
+    });
+  });
+});
+
+```
+```
+$ node app.js
+connection successfully to server
+Insert 3 documents into the collection
+Found the following records
+[ { _id: 5a0678bbc6fcb113c2807956, a: 3 } ]
+```
+
+
+- Update a document
+使用 `updateOne()` 方法 Update documents.  
+下面的方法是將 `{a : 2}` 這個物件更新成為 `{b : 1}`.
+```js
+var updateDocument = function(db, callback) {
+  // Get the documents collection
+  var collection = db.collection('documents');
+  // Update document where a is 2, set b equal to 1
+  collection.updateOne({ a : 2 }
+    , { $set: { b : 1 } }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Updated the document with the field a equal to 2");
+    callback(result);
+  });  
+}
+
+//call updateDocument method
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  insertDocuments(db, function() {
+    updateDocument(db, function() {
+      db.close();
+    });
+  });
+});
+```
+```
+$ node app.js
+connection successfully to server
+Insert 3 documents into the collection
+Found the following records
+[ { _id: 5a0678bbc6fcb113c2807956, a: 3 } ]
 ```
