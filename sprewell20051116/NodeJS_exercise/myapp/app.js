@@ -19,7 +19,8 @@ mongoClient.connect(url, function(err, db) {
   insertDocuments(db, function() {
     // findDocuments(db, function () {
     // findDocumentsFilter(db, function () {
-    updateDocument(db, function () {
+    // updateDocument(db, function () {
+    indexCollection(db, function () {
       db.close();
     });
   });
@@ -87,3 +88,17 @@ var updateDocument = function(db, callback) {
     callback(result);
   });
 }
+
+//
+// index Documents
+//
+var indexCollection = function(db, callback) {
+  db.collection('documents').createIndex(
+    { "a": 1 },
+      null,
+      function(err, results) {
+        console.log(results);
+        callback();
+    }
+  );
+};

@@ -28,8 +28,9 @@ $ mongo [HOSTNAME]:[PORT]/[DB_NAME] # remote URL
 > DBQuery.shellBatchSize = x # 讀取資料時迭代一次取回幾筆資料
 > printjson() # 將 document 以 JSON 方式輸出
 # --- 資料庫操作 ---
-> db.[DB_NAME].insert([DOCUMENT]) # 插M入資料
+> db.[DB_NAME].insert([DOCUMENT]) # 插入資料
 > db.[DB_NAME].find() # 列出資料庫中的資料
+> db.[DB_NAME].drop() # 清空 [DB_NAME] 中的所有資料
 ```
 #### 建立一個 collection 並插入一筆 document
 簡單的插入兩個 document 並確認資料庫中有這兩筆 document
@@ -289,4 +290,39 @@ connection successfully to server
 Insert 3 documents into the collection
 Found the following records
 [ { _id: 5a0678bbc6fcb113c2807956, a: 3 } ]
+```
+
+- Index a Collection
+Indexes can improve your application’s performance. The following function creates an index on the a field in the documents collection.
+```js
+var indexCollection = function(db, callback) {
+  db.collection('documents').createIndex(
+    { "a": 1 },
+      null,
+      function(err, results) {
+        console.log(results);
+        callback();
+    }
+  );
+};
+
+
+//call updateDocument method
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:27017/myproject';
+// Use connect method to connect to the server
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  insertDocuments(db, function() {
+    indexCollection(db, function() {
+      db.close();
+    });
+  });
+});
+
 ```
