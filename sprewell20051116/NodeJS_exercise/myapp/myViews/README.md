@@ -70,3 +70,4 @@ console.log('Node.js web server at port 3000 is running..')
 ref:
 - https://ithelp.ithome.com.tw/articles/10186637
 - Jade: http://naltatis.github.io/jade-syntax-docs/
+- HTML2Jade: http://html2jade.org/
