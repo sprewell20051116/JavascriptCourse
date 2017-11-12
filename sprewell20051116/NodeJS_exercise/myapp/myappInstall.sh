@@ -4,3 +4,4 @@ npm install express --save
 npm install body-parser --save
 npm install node-static
 npm install mongodb --save
+npm install jade --save
