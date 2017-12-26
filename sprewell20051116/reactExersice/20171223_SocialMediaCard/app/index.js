@@ -47,7 +47,7 @@ class Bio extends React.Component {
         <h1 className="name">{this.props.name}</h1>
         <h2 className="location">{this.props.location}</h2>
         <div className="occupation">
-          <p>{this.props.occupation}</p>
+          <p>{this.props.occupation.title}</p>
         </div>
       </div>
     )
@@ -55,12 +55,25 @@ class Bio extends React.Component {
 }
 
 class Updates extends React.Component {
+
+  updates() {
+    return this.props.updates.map(function(update, index) {
+
+      return (
+        <li className={"update " + update.platform} key={index} >
+          {update.status}
+        </li>
+      )
+
+    });
+  }
+
   render () {
+
     return(
        <div className="updates">
          <ul>
-           <li className="update">Updates</li>
-           <li className="update">Updates</li>
+           {this.updates()}
          </ul>
        </div>
     )
@@ -69,13 +82,14 @@ class Updates extends React.Component {
 
 class Card extends React.Component {
 
+
   render () {
-    
+
     return(
       <div className="card">
       <Photo photo={"images/Casper.jpg"}/>
-      <Bio name={"Casper.name"} location={"Taipei"} occupation={"casper@Taipei"}/>
-      <Updates />
+      <Bio name={person.name} location={person.location} occupation={person.occupation.title}/>
+      <Updates updates={person.updates}/>
       </div>
     )
   }
